@@ -1,0 +1,4 @@
+﻿interface IElectricalComponent
+{
+    void CheckVoltage();
+}

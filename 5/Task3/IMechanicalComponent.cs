@@ -1,0 +1,4 @@
+﻿interface IMechanicalComponent
+{
+    void CheckWear();
+}

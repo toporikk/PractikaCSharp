@@ -1,0 +1,28 @@
+<Window x:Class="DocVersionControl.AddDocumentWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Создание документа"
+        Width="420" Height="231"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize">
+
+    <Border Background="White" CornerRadius="10" Padding="20" HorizontalAlignment="Center" Width="420" Height="215" VerticalAlignment="Top">
+        <StackPanel HorizontalAlignment="Center" Width="380" Margin="0,0,0,-24">
+            <TextBlock Text="📄 НОВЫЙ ДОКУМЕНТ"
+                       FontSize="16" FontWeight="Bold"
+                       HorizontalAlignment="Center" Margin="0,0,0,20"/>
+
+            <TextBlock Text="Название документа:" Margin="0,0,0,5" FontSize="14"/>
+            <TextBox x:Name="txtName" Margin="0,0,0,25" Height="35"
+                     FontSize="14" Padding="5"/>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="✅ Создать" Width="100" Height="35" Margin="0,0,10,0"
+                        Click="btnOk_Click" Background="#4CAF50" Foreground="White"
+                        FontWeight="Bold" Cursor="Hand"/>
+                <Button Content="❌ Отмена" Width="80" Height="35" Click="btnCancel_Click"
+                        Background="#F44336" Foreground="White" Cursor="Hand"/>
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</Window>

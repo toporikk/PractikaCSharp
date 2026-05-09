@@ -1,0 +1,143 @@
+﻿<Window x:Class="DocVersionControl.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Система контроля версий документов" 
+        Width="950" Height="650"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <Storyboard x:Key="FadeInAndSlideRight">
+            <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.25"/>
+            <ThicknessAnimation Storyboard.TargetProperty="Margin" From="-20,0,0,0" To="0,0,0,0" Duration="0:0:0.25"/>
+        </Storyboard>
+    </Window.Resources>
+
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Левая панель -->
+        <Border Grid.Column="0" Background="#F5F5F5" Margin="5" CornerRadius="8" Padding="10">
+            <StackPanel>
+                <TextBlock Text="📋 МОИ ДОКУМЕНТЫ" FontWeight="Bold" FontSize="14" Margin="0,0,0,10"/>
+
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                    <Button x:Name="btnAddDoc" Content="➕ Новый документ" Width="130" Height="35" 
+                            Click="btnAddDoc_Click" Background="#2196F3" Foreground="White" FontWeight="Bold"/>
+                    <Button x:Name="btnRefresh" Content="🔄" Width="35" Height="35" Margin="5,0,0,0" 
+                            Click="btnRefresh_Click" FontSize="16"/>
+                </StackPanel>
+
+                <ListBox x:Name="lstDocuments" Height="450" SelectionChanged="lstDocuments_SelectionChanged">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Padding="8" Margin="2" CornerRadius="6">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="13"/>
+                                    <TextBlock Text="{Binding CreatedBy}" FontSize="11" Foreground="Gray"/>
+                                    <TextBlock Text="{Binding CreatedDate, StringFormat='dd.MM.yyyy HH:mm'}" FontSize="10" Foreground="Silver"/>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
+        </Border>
+
+        <!-- Правая панель -->
+        <Border Grid.Column="1" Background="White" Margin="5" CornerRadius="8" Padding="10">
+            <StackPanel>
+                <TextBlock x:Name="lblDocTitle" FontWeight="Bold" FontSize="16" Margin="0,0,0,10"/>
+
+                <TextBlock Text="📄 ВЕРСИИ ДОКУМЕНТА" FontWeight="Bold" Margin="0,10,0,5" FontSize="13"/>
+
+                <ListBox x:Name="lstVersions" Height="180" Margin="0,0,0,10" 
+                         SelectionChanged="lstVersions_SelectionChanged">
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Style.Triggers>
+                                <EventTrigger RoutedEvent="Loaded">
+                                    <BeginStoryboard Storyboard="{StaticResource FadeInAndSlideRight}"/>
+                                </EventTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border x:Name="VersionBorder" BorderBrush="#DDD" BorderThickness="0,0,0,1" 
+                                    Padding="8" Margin="2" CornerRadius="6">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding VersionNumber}" FontWeight="Bold" FontSize="13"/>
+                                    <Grid x:Name="DescriptionPanel" Height="0">
+                                        <TextBlock Text="{Binding Description}" FontSize="11" 
+                                                   TextWrapping="Wrap" Margin="0,3,0,3"/>
+                                    </Grid>
+                                    <TextBlock FontSize="10" Foreground="Gray">
+                                        <TextBlock.Text>
+                                            <MultiBinding StringFormat="{}{0} - {1:dd.MM.yyyy HH:mm}">
+                                                <Binding Path="CreatedBy"/>
+                                                <Binding Path="CreatedDate"/>
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                </StackPanel>
+                            </Border>
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}, Path=IsSelected}" Value="True">
+                                    <Setter TargetName="VersionBorder" Property="Background" Value="#FFE3F2FD"/>
+                                    <Setter TargetName="VersionBorder" Property="BorderBrush" Value="#2196F3"/>
+                                    <Setter TargetName="VersionBorder" Property="BorderThickness" Value="2"/>
+                                    <DataTrigger.EnterActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetName="DescriptionPanel"
+                                                                 Storyboard.TargetProperty="Height"
+                                                                 From="0" To="80" Duration="0:0:0.25"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.EnterActions>
+                                    <DataTrigger.ExitActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetName="DescriptionPanel"
+                                                                 Storyboard.TargetProperty="Height"
+                                                                 From="80" To="0" Duration="0:0:0.2"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.ExitActions>
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+                <StackPanel Orientation="Horizontal" Margin="0,5,0,10">
+                    <Button x:Name="btnAddVersion" Content="➕ Добавить версию" Width="130" Height="35" 
+                            Click="btnAddVersion_Click" Background="#FF9800" Foreground="White" FontWeight="Bold"/>
+                    <Button x:Name="btnDeleteDoc" Content="🗑 Удалить документ" Width="140" Height="35" Margin="5,0,0,0" 
+                            Click="btnDeleteDoc_Click" Background="#F44336" Foreground="White" FontWeight="Bold"/>
+                    <Button x:Name="btnChat" Content="💬 Чат" Width="80" Height="35" Margin="5,0,0,0" 
+                            Click="btnChat_Click" Background="#9C27B0" Foreground="White" FontWeight="Bold"/>
+                </StackPanel>
+
+                <!-- Уведомления -->
+                <Border Background="#E3F2FD" CornerRadius="5" Padding="10" Margin="0,10,0,0">
+                    <StackPanel>
+                        <TextBlock Text="🔔 УВЕДОМЛЕНИЯ" FontWeight="Bold" FontSize="12" Margin="0,0,0,5"/>
+                        <ListBox x:Name="lstNotifications" Height="80" Background="Transparent" BorderThickness="0">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding}" FontSize="10" Foreground="#1565C0" TextWrapping="Wrap"/>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </StackPanel>
+                </Border>
+
+                <TextBlock x:Name="lblStatus" Margin="0,10,0,0" FontSize="10" Foreground="Gray" HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

@@ -1,0 +1,44 @@
+﻿<Application x:Class="DocVersionControl.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             StartupUri="LoginWindow.xaml">
+    <Application.Resources>
+        <!-- Анимация появления с затуханием и слайдом вверх -->
+        <Storyboard x:Key="FadeInAndSlideUp">
+            <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                         From="0" To="1" Duration="0:0:0.25"/>
+            <ThicknessAnimation Storyboard.TargetProperty="Margin"
+                            From="0,20,0,0" To="0,0,0,0"
+                            Duration="0:0:0.25"/>
+        </Storyboard>
+
+        <!-- Анимация появления с затуханием и слайдом вправо -->
+        <Storyboard x:Key="FadeInAndSlideRight">
+            <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                         From="0" To="1" Duration="0:0:0.25"/>
+            <ThicknessAnimation Storyboard.TargetProperty="Margin"
+                            From="-20,0,0,0" To="0,0,0,0"
+                            Duration="0:0:0.25"/>
+        </Storyboard>
+
+        <!-- Анимация плавного раскрытия высоты -->
+        <Storyboard x:Key="ExpandHeight">
+            <DoubleAnimation Storyboard.TargetProperty="Height"
+                         From="0" To="NaN" Duration="0:0:0.3"/>
+        </Storyboard>
+
+        <!-- Анимация подсветки элемента -->
+        <Storyboard x:Key="HighlightVersion">
+            <ColorAnimation Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                        From="Transparent" To="#FFE3F2FD" Duration="0:0:0.15"
+                        AutoReverse="True"/>
+        </Storyboard>
+
+        <!-- Анимация плавного раскрытия описания -->
+        <Storyboard x:Key="ExpandDescription">
+            <DoubleAnimation Storyboard.TargetProperty="Height"
+                     From="0" To="80" Duration="0:0:0.3"
+                     DecelerationRatio="0.8"/>
+        </Storyboard>
+    </Application.Resources>
+</Application>

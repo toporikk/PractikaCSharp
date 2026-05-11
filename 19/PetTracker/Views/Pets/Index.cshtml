@@ -1,0 +1,42 @@
+﻿@model List<PetTracker.Models.Pet>
+
+@{
+    ViewData["Title"] = "Мои питомцы";
+}
+
+<h1>🐾 Мои питомцы</h1>
+
+<p>
+    <a href="/Pets/Add">➕ Добавить питомца</a>
+</p>
+
+@if (!Model.Any())
+{
+    <p>У вас пока нет питомцев. Добавьте первого!</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Имя</th>
+                <th>Тип</th>
+                <th>Дата рождения</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var pet in Model)
+            {
+                <tr>
+                    <td>@pet.Name</td>
+                    <td>@pet.Type</td>
+                    <td>@pet.Birthday.ToString("yyyy-MM-dd")</td>
+                    <td>
+                        <a asp-action="Age" asp-route-id="@pet.Id" class="btn btn-info btn-sm">📊 Возраст</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

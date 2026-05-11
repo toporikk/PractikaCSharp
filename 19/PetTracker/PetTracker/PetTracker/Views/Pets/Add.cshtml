@@ -1,0 +1,30 @@
+﻿@model PetTracker.Models.Pet
+
+@{
+    ViewData["Title"] = "Добавить питомца";
+}
+
+<h1>➕ Добавить нового питомца</h1>
+
+<form method="post" action="/Pets/Add">
+    <div>
+        <label>Имя питомца:</label><br />
+        <input type="text" name="Name" required />
+    </div>
+    <br />
+
+    <div>
+        <label>Тип животного:</label><br />
+        <input type="text" name="Type" required placeholder="Кот, Собака и т.д." />
+    </div>
+    <br />
+
+    <div>
+        <label>Дата рождения:</label><br />
+        <input type="date" name="Birthday" required />
+    </div>
+    <br />
+
+    <button type="submit">✅ Добавить</button>
+    <a href="/Pets">🔙 Назад</a>
+</form>
